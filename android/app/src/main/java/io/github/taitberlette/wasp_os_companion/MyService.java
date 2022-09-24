@@ -183,6 +183,7 @@ public class MyService extends IntentService {
                 connectionState = 0;
 
                 broadcastUpdate("io.github.taitberlette.wasp_os_companion.watchDisconnected");
+                scanForWatch();
 
                 unregisterReceiver(phoneReceiver);
                 unregisterReceiver(mediaReceiver);
