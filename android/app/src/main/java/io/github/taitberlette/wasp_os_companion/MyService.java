@@ -183,7 +183,7 @@ public class MyService extends IntentService {
                 connectionState = 0;
 
                 broadcastUpdate("io.github.taitberlette.wasp_os_companion.watchDisconnected");
-                scanForWatch();
+                //scanForWatch();
 
                 unregisterReceiver(phoneReceiver);
                 unregisterReceiver(mediaReceiver);
@@ -209,6 +209,12 @@ public class MyService extends IntentService {
                 uartRX = null;
                 uartTX = null;
                 cccd = null;
+                
+                if (connectionState != 0) {
+                        broadcastUpdate("io.github.taitberlette.wasp_os_companion.watchConnected", bleGatt.getDevice().getName(), bleGatt.getDevice().getAddress());
+                        backgroundSync();
+                }
+                scanForWatch();
             }
         }
 
@@ -253,6 +259,10 @@ public class MyService extends IntentService {
             } else {
                 bleGatt.disconnect();
                 broadcastUpdate("io.github.taitberlette.wasp_os_companion.watchDisconnected");
+                if (connectionState != 0) {
+                        broadcastUpdate("io.github.taitberlette.wasp_os_companion.watchConnected", bleGatt.getDevice().getName(), bleGatt.getDevice().getAddress());
+                        backgroundSync();
+                }
                 scanForWatch();
             }
         }
@@ -360,9 +370,9 @@ public class MyService extends IntentService {
             scanning = true;
             bleScanner.startScan(leScanCallback);
         } else {
-            scanning = false;
-            bleScanner.stopScan(leScanCallback);
-            broadcastUpdate("io.github.taitberlette.wasp_os_companion.watchDisconnected");
+            //scanning = false;
+            //bleScanner.stopScan(leScanCallback);
+            //broadcastUpdate("io.github.taitberlette.wasp_os_companion.watchDisconnected");
         }
     }
 
